@@ -43,7 +43,7 @@ class Search extends React.Component {
                     <label>Feeling thirsty?</label>
                     <input type="text" placeholder="What can I get started for you..." value={this.state.searchTerm} onChange={this.updateSearch} />
                 </form>
-                <button>Bartender's Choice</button>
+                <button>Bartender&rsquo;s Choice</button>
                 { this.state.performSearch && (
                     <Redirect to={'search/' + this.state.searchTerm }/>
                 )}
