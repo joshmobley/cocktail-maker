@@ -16,7 +16,7 @@
 }
 
 label {
-    color: #FCD9B6;
+    color: #ddd;
     display: block;
     font-size: 2.4rem;
     font-weight: 900;
@@ -27,7 +27,7 @@ label {
 }
 
 input {
-    background: rgba(255, 255, 255, .25);
+    background: rgba(255, 255, 255, .15);
     border: none;
     border-radius: 5px;
     box-sizing: border-box;
