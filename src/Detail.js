@@ -16,8 +16,23 @@ class Detail extends React.Component {
         }
     }
 
-    componentDidMount() {
-        this.getDetails();
+    getDetails = () => {
+        const { id } = this.props.match.params;
+        axios
+            .get('https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=' + id)
+            .then( res => {
+                const drink = res.data.drinks[0];
+                this.setState( (prevState) => {
+                    return {
+                        title: drink.strDrink,
+                        category: drink.strCategory,
+                        image: drink.strDrinkThumb,
+                        glass: drink.strGlass,
+                        ingredients: this.setIngredients(drink),
+                        instructions: drink.strInstructions
+                    }
+                });
+            });
     }
 
     setIngredients = (drinkObj) => {
@@ -38,41 +53,28 @@ class Detail extends React.Component {
         return ingredients;
     }
 
-    getDetails = () => {
-        const { id } = this.props.match.params;
-        axios
-            .get('https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=' + id)
-            .then( res => {
-                const drink = res.data.drinks[0];
-                this.setState( (prevState) => {
-                    return {
-                        title: drink.strDrink,
-                        category: drink.strCategory,
-                        image: drink.strDrinkThumb,
-                        glass: drink.strGlass,
-                        ingredients: this.setIngredients(drink),
-                        instructions: drink.strInstructions
-                    }
-                });
-                console.log(this.state);
-            });
-                        
-            
-    }
-
     showDetails = () => {
         return (
-            <div>
-            <h1>{this.state.title}</h1>
-            <h2>{this.state.category}</h2>
-            <img src={this.state.image} />
-            <p>{this.state.glass}</p>
-            <ul>
-                {this.state.ingredients.map( ing => <li key={ing}>{ing}</li>)}
-            </ul>
-            <p>{this.state.instructions}</p>
+            <div class="detail">
+                <img src={this.state.image} className="visible" />
+                <div className="detail__content">
+                    <div className="detail__header">
+                        <h1 className="detail__title">{this.state.title}</h1>
+                        <h2 className="detail__sub-title">{this.state.category} | {this.state.glass}</h2>
+                    </div>
+                    <div className="detail__description">
+                        <ul>
+                            {this.state.ingredients.map( ing => <li key={ing}>{ing}</li>)}
+                        </ul>
+                        <p>{this.state.instructions}</p>
+                    </div>
+                </div>
             </div>
         );
+    }
+
+    componentDidMount() {
+        this.getDetails();
     }
 
     render() {

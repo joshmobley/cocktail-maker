@@ -37,7 +37,6 @@ class Search extends React.Component {
 
     performSearch(event) {
         event.preventDefault();
-        console.log(this.state.searchTerm);
         this.setState({ performSearch: true });
     }
 
