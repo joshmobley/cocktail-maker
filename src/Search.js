@@ -37,6 +37,11 @@ class Search extends React.Component {
     }
 
     render() {
+
+        if(this.state.performSearch) {
+            return <Redirect to={'/search/' + this.state.searchTerm } push/>
+        }
+        
         return (
             <div className="search">
                 <form onSubmit={this.performSearch} className="search__form">
@@ -44,9 +49,6 @@ class Search extends React.Component {
                     <input type="text" placeholder="What can I get started for you..." value={this.state.searchTerm} onChange={this.updateSearch} />
                 </form>
                 <button>Bartender&rsquo;s Choice</button>
-                { this.state.performSearch && (
-                    <Redirect to={'search/' + this.state.searchTerm }/>
-                )}
             </div>
         );
     }
