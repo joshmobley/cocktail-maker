@@ -9,21 +9,30 @@ class Search extends React.Component {
         super(props);
 
         this.state = {
-            chooseRandom: false,
+            performRandom: false,
             performSearch: false,
-            searchTerm: ''
+            searchTerm: '',
+            randomId: null
         };
 
         this.performSearch = this.performSearch.bind(this);
         this.updateSearch = this.updateSearch.bind(this);
     }
 
-    getRandomDrink(event) {
-        event.preventDefault();
+    getRandomDrink = (event) => {
 
         axios
             .get('https://www.thecocktaildb.com/api/json/v1/1/random.php')
-            .then( res => console.log(res));
+            .then( res => {
+                const drinkID = res.data.drinks[0].idDrink;
+                this.setState( (prevState) => {
+                    return {
+                        ...prevState,
+                        randomId: drinkID,
+                        performRandom: true
+                    }
+                })
+            })
     }
 
     performSearch(event) {
@@ -42,13 +51,17 @@ class Search extends React.Component {
             return <Redirect to={'/search/' + this.state.searchTerm } push/>
         }
         
+        if(this.state.performRandom) {
+            return <Redirect to={'/drink/' + this.state.randomId } push />
+        }
+        
         return (
             <div className="search">
                 <form onSubmit={this.performSearch} className="search__form">
                     <label>Feeling thirsty?</label>
                     <input type="text" placeholder="What can I get started for you..." value={this.state.searchTerm} onChange={this.updateSearch} />
                 </form>
-                <button>Bartender&rsquo;s Choice</button>
+                <button onClick={this.getRandomDrink}>Bartender&rsquo;s Choice</button>
             </div>
         );
     }
